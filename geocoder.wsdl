@@ -1,0 +1,57 @@
+<definitions name="GeoService" targetNamespace="http://www.examples.com/wsdl/GeoService.wsdl" 
+  xmlns="http://schemas.xmlsoap.org/wsdl/" 
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+  xmlns:tns="http://www.examples.com/wsdl/GeoService.wsdl" 
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <message name="getGeocodeRequest">
+    <part name="endereco" type="xsd:string"/>
+  </message>
+
+  <message name="getGeocodeResponse">
+    <part name="latitude" type="xsd:float"/>
+    <part name="longitude" type="xsd:float"/>
+  </message>
+
+  <portType name="Geo_PortType">
+    <operation name="performGeocode">
+      <input message="tns:getGeocodeRequest"/>
+      <output message="tns:getGeocodeResponse"/>
+    </operation>
+    <operation name="reverseGeocode">
+      <input message="tns:getGeocodeResponse"/>
+      <output message="tns:getGeocodeRequest"/>
+    </operation>
+
+  </portType>
+
+  <binding name="Geo_Binding" type="tns:Geo_PortType">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="performGeocode">
+      <soap:operation soapAction="performGeocode"/>
+      <input>
+        <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:examples:geoservice" use="encoded"/>
+      </input>
+      <output>
+        <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:examples:geoservice" use="encoded"/>
+      </output>
+    </operation>
+      <operation name="reverseGeocode">
+      <soap:operation soapAction="reverseGeocode"/>
+      <input>
+        <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:examples:geoservice" use="encoded"/>
+      </input>
+      <output>
+        <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:examples:geoservice" use="encoded"/>
+      </output>
+    </operation>
+
+  </binding>
+
+  <service name="Geocode_Service">
+    <documentation>Geocode Service</documentation>
+    <port binding="tns:Geo_Binding" name="Geocode_Port">
+      <soap:address location="http://localhost:7000/geocoder/" />
+    </port>
+  </service>
+</definitions>
